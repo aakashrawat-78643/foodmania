@@ -1,0 +1,1399 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Food Delights</title>
+    
+    <script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-database-compat.js"></script>
+  </head>
+    <style>
+
+h1 {
+            color: #333;
+            margin-bottom: 30px;
+            text-align: center;
+        }
+
+        .type {
+            background-color: #f8f8f8;
+            border-radius: 15px;
+            box-shadow: 0 4px 8px rgb(0, 0, 0, 0.1);
+            display: grid;
+            grid-template-columns: 1fr 2fr 1fr; 
+            align-items: center;
+            padding: 20px;
+            margin-bottom: 20px;
+            width: 90%;
+            max-width: 600px;
+        }
+        .type:hover{
+            background-color: #f7ebeb;
+        }
+
+        .type img {
+            width: 100%;
+            max-width: 150px;
+            height: auto;
+            border-radius: 10px;
+            object-fit: cover; /* Maintain aspect ratio */
+        }
+
+        .type p.dis {
+            text-align: center;
+            font-size: 1.1em;
+            color: #555;
+            line-height: 1.5;
+        }
+
+        .cho {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .cho button {
+            background-color: #e0f2fe;
+            border: none;
+            border-radius: 8px;
+            padding: 8px 15px;
+            font-size: 1em;
+            cursor: pointer;
+            margin: 0 5px;
+            transition: background-color 0.3s ease;
+        }
+
+        .cho button:hover {
+            background-color: #b3e5fc;
+        }
+
+        .cho #val, .cho #val1, .cho #val3 {
+            font-size: 1.2em;
+            padding: 8px 12px;
+            border-radius: 5px;
+            background-color: #f0f0f0;
+            margin: 0 5px;
+            min-width: 30px;
+            text-align: center;
+        }
+
+        /* Responsive adjustments */
+        @media (max-width: 600px) {
+            .type {
+                grid-template-columns: 1fr;
+                text-align: center;
+            }
+            .type img {
+                max-width: 200px;
+                margin: 0 auto 10px;
+            }
+        }
+
+        .cho button:hover {
+            background-color: #b3e5fc;
+        }
+
+        .cho #val, .cho #val1 {font-size: 1.2em;padding: 8px 12px;border-radius: 5px;background-color: #f0f0f0;margin: 0 5px;min-width: 30px;text-align: center;
+        }
+
+        /* Responsive adjustments */
+        @media (max-width: 600px) {
+            .type {
+                grid-template-columns: 1fr;
+                text-align: center;
+            }
+            .type img {
+                max-width: 200px;
+                margin: 0 auto 10px;
+            }
+        }
+        #ca{
+            transition: 500ms;
+            background-color: #ab5c3c;
+            padding: 5px;
+            color: yellow;
+            font-weight: bolder;
+            font-style: italic;
+            border-radius: 10px;
+        }
+        #ca:hover{
+            transition: 500ms;
+            background-color: black;
+            color: white;
+        }
+        #cartpage{
+            display: none;
+            background: whitesmoke;
+            padding: 50px;
+            padding-bottom: 0%;
+        }
+        .price{
+            text-align: center;
+            font-weight: bolder;
+            font-size: large;
+            background: linear-gradient(50deg,red,blue,navy);
+            color: transparent;
+            background-clip: text;
+        }
+        #statment{
+            color: #333;
+            font-weight: bolder;
+            text-align: center;
+        }
+
+
+        #mainpage nav {
+  background-color: #f8f8f8;
+  padding: 1rem 0;
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+}
+
+#mainpage .logo {
+  font-size: 1.5rem;
+  font-weight: bold;
+  color: #e44d26; /* Example color */
+}
+
+#mainpage .nav-links {
+  display: flex;
+  gap: 1rem;
+}
+
+#mainpage .nav-links a {
+  text-decoration: none;
+  color: #333;
+  transition: color 0.3s ease;
+}
+
+#mainpage .nav-links a:hover {
+  color: #e44d26;
+}
+
+#mainpage .ajit {
+  background-image: url('your-background-image.jpg'); /* Replace with your image */
+  background-size: cover;
+  background-position: center;
+  color: white;
+  text-align: center;
+  padding: 4rem 0;
+}
+
+#mainpage .cta-button {
+  background-color: #e44d26;
+  color: white;
+  padding: 1rem 2rem;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+#mainpage .cta-button:hover {
+  background-color: #c63d1a;
+}
+
+#mainpage .menu {
+  padding: 2rem;
+}
+
+#mainpage .menu-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 1rem;
+}
+
+#mainpage .menu-item {
+  border: 1px solid #ddd;
+  border-radius: 5px;
+  overflow: hidden;
+}
+
+#mainpage .menu-item img {
+  width: 100%;
+  height: auto;
+  display: block;
+}
+
+#mainpage .item-info {
+  padding: 1rem;
+}
+
+#mainpage .price {
+  font-weight: bold;
+  color: #e44d26;
+}
+
+#mainpage footer {
+  background-color: #333;
+  color: white;
+  text-align: center;
+  padding: 1rem 0;
+}
+
+#mainpage .social-icons {
+  display: flex;
+  justify-content: center;
+  gap: 1rem;
+}
+
+#mainpage .social-icons i {
+  font-size: 1.5rem;
+}
+
+#info {
+      background-color: #ffffff;
+      max-width: 800px;
+      margin: auto;
+      padding: 30px;
+      border-radius: 10px;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+      font-family: Arial, sans-serif;
+    }
+
+    #info h1, 
+    #info h2 {
+      color: #2c3e50;
+    }
+
+    #info p {
+      color: #34495e;
+      line-height: 1.6;
+    }
+
+    #info .section {
+      margin-bottom: 20px;
+    }
+
+    #info .label {
+      font-weight: bold;
+      color: #2c3e50;
+    }
+
+    #info .value {
+      margin-left: 10px;
+    }
+
+    #info hr {
+      border: none;
+      border-top: 1px solid #ccc;
+      margin: 20px 0;
+    }
+    #orde{
+      background-color: #ff6600;
+      color: white;
+      border: none;
+      padding: 12px 24px;
+      font-size: 16px;
+      border-radius: 8px;
+      cursor: pointer;
+      box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+      transition: all 0.3s ease;
+    }
+    #orde:hover{
+      transition:  all 0.3s ease;
+      background-color: #e65c00;
+      transform: scale(1.05);
+      box-shadow: 0 6px 12px rgba(0,0,0,0.3);
+    }
+    </style>
+  
+  
+  <body style="font-family: sans-serif; background: linear-gradient(20deg, rgb(200, 100, 100), #f0e68c, #f0e68c, rgb(200, 100, 100)); display: flex; flex-direction: column; align-items: center; justify-content: center; min-height: 100vh; margin: 0; padding: 20px; box-sizing: border-box;">
+<div id="mainpage" style="background-color: #a77171;">
+    <nav>
+        <a href="receiver.html"><div class="logo">FOOD.MANIA</div></a>
+      </nav>
+    
+      <section class="ajit" id="home">
+        <div class="ajit-content">
+          <h1>
+            welcome to foody stole</h1> 
+            <h1>WE PROVIDE DELICIOS FOOD</h1>
+          <p>Fresh Ingredients, Perfect Recipes, Unforgettable Taste</p>
+          <button class="cta-button" onclick="on()">Order Now</button>
+        </div>
+      </section>
+    
+      <section class="menu" id="menu">
+        <div class="menu-grid">
+          <div class="menu-item">
+            <img src="https://images.unsplash.com/photo-1555939594-58d7cb561ad1" alt="Grilled Steak">
+          </div>
+    
+          <div class="menu-item">
+            <img src="https://images.unsplash.com/photo-1565299624946-b28f40a0ae38" alt="Pasta">
+          </div>
+    
+          <div class="menu-item">
+            <img src="https://images.unsplash.com/photo-1565958011703-44f9829ba187" alt="Salad">
+          </div>
+        </div>
+      </section>
+    
+      <footer id="contact">
+        <p>Contact us: food mania.com | Phone: 7678260738</p>
+        <p>Follow us on social media</p>
+        <div class="social-icons">
+          <i class="fab fa-facebook"></i>
+          <i class="fab fa-instagram"></i>
+          <i class="fab fa-twitter"></i>
+        </div>
+      </footer>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div id="info" style="display: none;" onclick="pagchib()">
+  <h1>Diploma Second Year Project</h1>
+
+  <div class="section">
+    <span class="label">Project Title:</span>
+    <span class="value">FOOD MANIA</span>
+  </div>
+
+  <div class="section">
+    <span class="label">Team Members:</span>
+    <span class="value">Aakash(102), Ajeet(105), Ajeet(106), Dushyant(123)</span>
+  </div>
+
+  <div class="section">
+    <h2>Project Description</h2>
+    <p>Food ordering site with only user interface for practice in diploma second year</p>
+  </div>
+
+  <div class="section">
+    <h2>Technologies Used</h2>
+    <p>.html, .css, .js</p>
+  </div>
+
+  <div class="section">
+    <h2>Objective</h2>
+    <p>to store whole site in one webpage making it look like a site with multiple web pages using DIV element in HTML making it possible to share even on whatsapp without needing any addition file or database and can run on any device without any interferrance</p>
+  </div>
+
+  <div class="section">
+    <h2>Conclusion</h2>
+    <p>code gets a little complicated but if arranged properly and name properly its easy to understand can even select food to your desire and make cart you want</p>
+  </div>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div id="restaurant" style="display: none;background-color: #a77171;padding: 50px;" onclick="pagchrb()">
+  <h1>Restaurants in Faridabad</h1>
+    <div class="restaurant-list">
+        <div class="restaurant-card">
+            <h3>bhai restaurant</h3>
+            <p>Address: SCF 46, HUDA Market, Sector 3, Faridabad</p>
+            </div>
+        <div class="restaurant-card">
+            <h3>Milan Sweet House</h3>
+            <p>Address: SCF 1 & 2, DLF Market, Block D, Near Vansh Taxi Service, Sector 11, Faridabad</p>
+        </div>
+        <div class="restaurant-card">
+            <h3>Milan Sweet House</h3>
+            <p>Shop 64-65, Sector 10, Faridabad</p>
+        </div>
+        <div class="restaurant-card">
+            <h3>Milan Sweet & Snacks</h3>
+            <p>SCO 89 & 90, Huda Market, Sector 2, Faridabad</p>
+        </div>
+        </div>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    <div id="mainp" style="place-items: center; width: 100%; display: none; flex-direction: column; align-items: center;">
+    <div id="block" style="margin-bottom: 30px; width: 90%; max-width: 800px; height: 250px; background-image: url('https://ptaourchildren.org/wp-content/uploads/2018/01/shutterstock_472856638.jpg'); background-size: cover; background-repeat: no-repeat; border-radius: 15px; display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); place-items: center; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); background-position: center;">
+        <button style="background-color: #e0f2fe; border: none; border-radius: 8px; padding: 10px 20px; font-size: 1em; font-weight: bold; cursor: pointer; transition: background-color 0.3s ease; width: 80%; max-width: 200px;" onmouseover="this.style.backgroundColor='#b3e5fc'" onmouseout="this.style.backgroundColor='#e0f2fe'" onclick="off()">Main Page</button>
+        <button style="background-color: #e0f2fe; border: none; border-radius: 8px; padding: 10px 20px; font-size: 1em; font-weight: bold; cursor: pointer; transition: background-color 0.3s ease; width: 80%; max-width: 200px;" onmouseover="this.style.backgroundColor='#b3e5fc'" onmouseout="this.style.backgroundColor='#e0f2fe'" onclick="pagchi()">Information</button>
+        <button style="background-color: #e0f2fe; border: none; border-radius: 8px; padding: 10px 20px; font-size: 1em; font-weight: bold; cursor: pointer; transition: background-color 0.3s ease; width: 80%; max-width: 200px;" onmouseover="this.style.backgroundColor='#b3e5fc'" onmouseout="this.style.backgroundColor='#e0f2fe'" onclick="pagchr()">Restaurant</button>
+    </div>
+    <div><h1 id="leg" style="text-align: center; margin-bottom: 20px; color: #333;">What would you serve on your plate?</h1></div>
+    <div id="contain" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 20px; width: 90%; max-width: 1200px; padding: 20px;">
+        <div id="naan" onclick="pagch()" style="height: 200px; background-image: url('https://th.bing.com/th/id/OIP.RkK7n0cz2n25Tde7U2oiHAHaHa?rs=1&pid=ImgDetMain'); background-size: cover; background-repeat: no-repeat; border-radius: 10px; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); transition: transform 0.3s ease; cursor: pointer; background-position: center;" onmouseover="this.style.transform='scale(1.05)'; this.style.boxShadow='0 8px 16px rgba(0, 0, 0, 0.2)'" onmouseout="this.style.transform='scale(1)'; this.style.boxShadow='0 4px 8px rgba(0, 0, 0, 0.1)'"></div>
+        <div id="sabji" onclick="pagchsab()" style="height: 200px; background-image: url('https://i.ytimg.com/vi/6T9Znr8VReg/maxresdefault.jpg'); background-size: cover; background-repeat: no-repeat; border-radius: 10px; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); transition: transform 0.3s ease; cursor: pointer; background-position: center;" onmouseover="this.style.transform='scale(1.05)'; this.style.boxShadow='0 8px 16px rgba(0, 0, 0, 0.2)'" onmouseout="this.style.transform='scale(1)'; this.style.boxShadow='0 4px 8px rgba(0, 0, 0, 0.1)'"></div>
+        <div id="sweets" onclick="pagchm()" style="height: 200px; background-image: url('https://fromyouflowers.pk/product/special-mix-mithai/13-Assorted-Tin-Box-2.jpg'); background-size: cover; background-repeat: no-repeat; border-radius: 10px; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); transition: transform 0.3s ease; cursor: pointer; background-position: center;" onmouseover="this.style.transform='scale(1.05)'; this.style.boxShadow='0 8px 16px rgba(0, 0, 0, 0.2)'" onmouseout="this.style.transform='scale(1)'; this.style.boxShadow='0 4px 8px rgba(0, 0, 0, 0.1)'"></div>
+        <div id="fast" onclick="pagchf()" style="height: 200px; background-image: url('https://img.freepik.com/premium-photo/fast-food-assortment-junk-food-concept-unhealthy-food-heart-teeth-skin-figure_839035-83486.jpg'); background-size: cover; background-repeat: no-repeat; border-radius: 10px; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); transition: transform 0.3s ease; cursor: pointer; background-position: center;" onmouseover="this.style.transform='scale(1.05)'; this.style.boxShadow='0 8px 16px rgba(0, 0, 0, 0.2)'" onmouseout="this.style.transform='scale(1)'; this.style.boxShadow='0 4px 8px rgba(0, 0, 0, 0.1)'"></div>
+        <div id="salad" onclick="pagchs()" style="height: 200px; background-image: url('https://culinarybite.com/images/large/exploring-world-cooking-vibrant-summer-salad-bursting-color.webp'); background-size: cover; background-repeat: no-repeat; border-radius: 10px; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); transition: transform 0.3s ease; cursor: pointer; background-position: center;" onmouseover="this.style.transform='scale(1.05)'; this.style.boxShadow='0 8px 16px rgba(0, 0, 0, 0.2)'" onmouseout="this.style.transform='scale(1)'; this.style.boxShadow='0 4px 8px rgba(0, 0, 0, 0.1)'"></div>
+        <div id="thali" onclick="pagcht()" style="height: 200px; background-image: url('https://i.pinimg.com/originals/e1/da/d5/e1dad5315972c8a9db86fb01d69c7ecb.jpg'); background-size: cover; background-repeat: no-repeat; border-radius: 10px; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); transition: transform 0.3s ease; cursor: pointer; background-position: center;" onmouseover="this.style.transform='scale(1.05)'; this.style.boxShadow='0 8px 16px rgba(0, 0, 0, 0.2)'" onmouseout="this.style.transform='scale(1)'; this.style.boxShadow='0 4px 8px rgba(0, 0, 0, 0.1)'"></div>
+        <div id="south" onclick="pagchsop()" style="height: 200px; background-image: url('https://th.bing.com/th/id/OIP.InlgltnGNwj7W93dJ_oQ_gHaEQ?rs=1&pid=ImgDetMain'); background-size: cover; background-repeat: no-repeat; border-radius: 10px; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); transition: transform 0.3s ease; cursor: pointer; background-position: center;" onmouseover="this.style.transform='scale(1.05)'; this.style.boxShadow='0 8px 16px rgba(0, 0, 0, 0.2)'" onmouseout="this.style.transform='scale(1)'; this.style.boxShadow='0 4px 8px rgba(0, 0, 0, 0.1)'"></div>
+    </div>
+    <button id="ca" onclick="scart()" style="background-color: #ab5c3c;border: none;color: white;padding: 15px 32px;text-align: center;text-decoration: none;display: inline-block;font-size: 16px;border-radius: 8px; /* Rounded corners */box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Subtle shadow */cursor: pointer;transition: background-color 0.3s ease, transform 0.2s ease;" onmouseover="this.style.backgroundColor='#45a049'; this.style.transform='scale(1.05)'" onmouseout="this.style.backgroundColor='#ab5c3c'; this.style.transform='scale(1)'">cart</button>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div id="naan_page" style="place-items: center; width: 100%; display: flex; flex-direction: column; align-items: center; display: none;">
+    <h1>Hope you find your choice</h1>
+    <div class="type">
+        <img src="https://th.bing.com/th/id/OIP.n277reMbqv2dr1ak8N2PhgHaHa?rs=1&pid=ImgDetMain" alt="Plain Naan">
+        <p class="dis">Plain Roti <br> Carving fluffy texture</p>
+        <div class="cho">
+            <button class="pl" onclick="inc()">+</button>
+            <div id="val">0</div>
+            <button class="min" onclick="dec()">-</button>
+        </div><br>
+        <div id="pricepr" class="price">&#8377; 20</div>
+    </div>
+    <div class="type">
+        <img src="https://allwaysdelicious.com/wp-content/uploads/2022/04/garlic-butter-naan-4.jpg" alt="Butter Naan">
+        <p class="dis">Butter Naan <br> Drowned in butter</p>
+        <div class="cho">
+            <button class="pl" onclick="inc1()">+</button>
+            <div id="val1">0</div>
+            <button class="min" onclick="dec1()">-</button>
+        </div>
+        <br><div id="pricebn" class="price">&#8377; 25</div>
+    </div>
+    <div class="type">
+        <img src="https://www.archanaskitchen.com/images/archanaskitchen/Indian_Breads/Easy_Aloo_Paratha_Recipe_North_Indian_Punjabi_Style-1.jpg" alt="Butter Naan">
+        <p class="dis">aloo paratha <br>stuffed with fluffy and tasty potato</p>
+        <div class="cho">
+            <button class="pl" onclick="inc3()">+</button>
+            <div id="val3">0</div>
+            <button class="min" onclick="dec3()">-</button>
+        </div>
+        <br><div id="priceap" class="price">&#8377; 35</div>
+    </div>
+    
+    <button onclick="pagchb()" style="background-color: #ab5c3c;border: none;color: white;padding: 15px 32px;text-align: center;text-decoration: none;display: inline-block;font-size: 16px;border-radius: 8px; /* Rounded corners */box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Subtle shadow */cursor: pointer;transition: background-color 0.3s ease, transform 0.2s ease;" onmouseover="this.style.backgroundColor='#45a049'; this.style.transform='scale(1.05)'" onmouseout="this.style.backgroundColor='#ab5c3c'; this.style.transform='scale(1)'">back</button>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div id="sabjipage" style="place-items: center; width: 100%; display: flex; flex-direction: column; align-items: center; display: none;">
+    <h1>Hope you find your choice</h1>
+    <div class="type">
+        <img src="https://recipes.timesofindia.com/photo/52446409.cms" alt="Plain Naan">
+        <p class="dis">Shahee paneer</p>
+        <div class="cho">
+            <button class="pl" onclick="inc4()">+</button>
+            <div id="val4">0</div>
+            <button class="min" onclick="dec4()">-</button>
+        </div>
+        <br><div id="pricesp" class="price">&#8377; 135</div>
+    </div>
+    <div class="type">
+        <img src="https://www.scrumptiously.com/wp-content/uploads/2023/05/DalMakhani.webp" alt="Butter Naan">
+        <p class="dis">Dal makhni</p>
+        <div class="cho">
+            <button class="pl" onclick="inc5()">+</button>
+            <div id="val5">0</div>
+            <button class="min" onclick="dec5()">-</button>
+        </div>
+        <br><div id="pricedm" class="price">&#8377; 100</div>
+    </div>
+    <div class="type">
+        <img src="https://hungryforever.net/wp-content/uploads/2015/07/veg-kadai-recipe.jpg" alt="Butter Naan">
+        <p class="dis">mix veg</p>
+        <div class="cho">
+            <button class="pl" onclick="inc6()">+</button>
+            <div id="val6">0</div>
+            <button class="min" onclick="dec6()">-</button>
+        </div>
+        <br><div id="pricemv" class="price">&#8377; 120</div>
+    </div>
+    
+    <button onclick="pagchsabb()" style="background-color: #ab5c3c;border: none;color: white;padding: 15px 32px;text-align: center;text-decoration: none;display: inline-block;font-size: 16px;border-radius: 8px; /* Rounded corners */box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Subtle shadow */cursor: pointer;transition: background-color 0.3s ease, transform 0.2s ease;" onmouseover="this.style.backgroundColor='#45a049'; this.style.transform='scale(1.05)'" onmouseout="this.style.backgroundColor='#ab5c3c'; this.style.transform='scale(1)'">back</button>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div id="mithai" style="place-items: center; width: 100%; display: flex; flex-direction: column; align-items: center; display: none;">
+    <h1>Hope you find your choice</h1>
+    <div class="type">
+        <img src="https://1.bp.blogspot.com/-TNs4EdP12Dw/XwyTjoa52yI/AAAAAAAA2IU/8SLwB0fXa8Mmi1wmdib33QbmKOuuqygGwCLcBGAsYHQ/w1200-h630-p-k-no-nu/DSC09238.JPG" alt="Plain Naan">
+        <p class="dis">rasmalai (2pc.)</p>
+        <div class="cho">
+            <button class="pl" onclick="inc7()">+</button>
+            <div id="val7">0</div>
+            <button class="min" onclick="dec7()">-</button>
+        </div>
+        <br><div id="pricemv" class="price">&#8377; 50</div>
+    </div>
+    <div class="type">
+        <img src="https://st4.depositphotos.com/17366968/40776/i/450/depositphotos_407763450-stock-photo-indian-sweet-rasgulla-also-know.jpg" alt="Butter Naan">
+        <p class="dis">rasgulla (2pc.)</p>
+        <div class="cho">
+            <button class="pl" onclick="inc8()">+</button>
+            <div id="val8">0</div>
+            <button class="min" onclick="dec8()">-</button>
+        </div>
+        <br><div id="pricemv" class="price">&#8377; 40</div>
+    </div>
+    <div class="type">
+        <img src="https://th.bing.com/th/id/R.bef3c40d5312fcddb0d01bbcb4165fea?rik=RzYgmhjC1CCSRA&riu=http%3a%2f%2fwww.blog.sagmart.com%2fwp-content%2fuploads%2f2015%2f11%2fKaju-Katli.jpg&ehk=U0M4t%2foDUNlQs4nPrJpWXcC5DIqS1LrtSdn2QNJIajI%3d&risl=&pid=ImgRaw&r=0" alt="Butter Naan">
+        <p class="dis">kaju katli (1kg.)</p>
+        <div class="cho">
+            <button class="pl" onclick="inc9()">+</button>
+            <div id="val9">0</div>
+            <button class="min" onclick="dec9()">-</button>
+        </div>
+        <br><div id="pricemv" class="price">&#8377; 400</div>
+    </div>
+    
+    <button onclick="pagchmb()" style="background-color: #ab5c3c;border: none;color: white;padding: 15px 32px;text-align: center;text-decoration: none;display: inline-block;font-size: 16px;border-radius: 8px; /* Rounded corners */box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Subtle shadow */cursor: pointer;transition: background-color 0.3s ease, transform 0.2s ease;" onmouseover="this.style.backgroundColor='#45a049'; this.style.transform='scale(1.05)'" onmouseout="this.style.backgroundColor='#ab5c3c'; this.style.transform='scale(1)'">back</button>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div id="fast_page" style="place-items: center; width: 100%; display: flex; flex-direction: column; align-items: center; display: none;">
+    <h1>Hope you find your choice</h1>
+    <div class="type">
+        <img src="https://www.omnimelbourne.com.au/wp-content/uploads/Burger1.jpg" alt="burger">
+        <p class="dis">burger</p>
+        <div class="cho">
+            <button class="pl" onclick="inc10()">+</button>
+            <div id="val10">0</div>
+            <button class="min" onclick="dec10()">-</button>
+        </div><br>
+        <div id="pricepr" class="price">&#8377; 50</div>
+    </div>
+    <div class="type">
+        <img src="https://www.jessicagavin.com/wp-content/uploads/2018/01/chow-mein-1200.jpg" alt="chow">
+        <p class="dis">chowmien</p>
+        <div class="cho">
+            <button class="pl" onclick="inc11()">+</button>
+            <div id="val11">0</div>
+            <button class="min" onclick="dec11()">-</button>
+        </div>
+        <br><div id="pricebn" class="price">&#8377; 150</div>
+    </div>
+    <div class="type">
+        <img src="https://static.fanpage.it/wp-content/uploads/sites/22/2020/09/iStock-618214356.jpg" alt="Butter Naan">
+        <p class="dis">french fries</p>
+        <div class="cho">
+            <button class="pl" onclick="inc12()">+</button>
+            <div id="val12">0</div>
+            <button class="min" onclick="dec12()">-</button>
+        </div>
+        <br><div id="priceap" class="price">&#8377; 130</div>
+    </div>
+    
+    <button onclick="pagchfb()" style="background-color: #ab5c3c;border: none;color: white;padding: 15px 32px;text-align: center;text-decoration: none;display: inline-block;font-size: 16px;border-radius: 8px; /* Rounded corners */box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Subtle shadow */cursor: pointer;transition: background-color 0.3s ease, transform 0.2s ease;" onmouseover="this.style.backgroundColor='#45a049'; this.style.transform='scale(1.05)'" onmouseout="this.style.backgroundColor='#ab5c3c'; this.style.transform='scale(1)'">back</button>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div id="thali_page" style="place-items: center; width: 100%; display: flex; flex-direction: column; align-items: center; display: none;">
+  <h1>Hope you find your choice</h1>
+  <div class="type">
+      <img src="https://thumbs.dreamstime.com/z/small-non-veg-thali-272432901.jpg" alt="burger">
+      <p class="dis">small thali</p>
+      <div class="cho">
+          <button class="pl" onclick="inc14()">+</button>
+          <div id="val14">0</div>
+          <button class="min" onclick="dec14()">-</button>
+      </div><br>
+      <div id="pricepr" class="price">&#8377; 140</div>
+  </div>
+  <div class="type">
+      <img src="https://tse4.mm.bing.net/th?id=OIP.Dq_LO74kYVhhoD16R9bg-gHaFj&rs=1&pid=ImgDetMain" alt="chow">
+      <p class="dis">medium thali</p>
+      <div class="cho">
+          <button class="pl" onclick="inc15()">+</button>
+          <div id="val15">0</div>
+          <button class="min" onclick="dec15()">-</button>
+      </div>
+      <br><div id="pricebn" class="price">&#8377; 240</div>
+  </div>
+  <div class="type">
+      <img src="https://img.freepik.com/premium-photo/indian-hindu-veg-thali-also-known-as-food-platter-is-complete-lunch-dinner-meal-closeup-selective-focus_466689-9137.jpg?w=2000" alt="Butter Naan">
+      <p class="dis">large thali</p>
+      <div class="cho">
+          <button class="pl" onclick="inc16()">+</button>
+          <div id="val16">0</div>
+          <button class="min" onclick="dec16()">-</button>
+      </div>
+      <br><div id="priceap" class="price">&#8377; 340</div>
+  </div>
+  
+  <button onclick="pagchtb()" style="background-color: #ab5c3c;border: none;color: white;padding: 15px 32px;text-align: center;text-decoration: none;display: inline-block;font-size: 16px;border-radius: 8px; /* Rounded corners */box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Subtle shadow */cursor: pointer;transition: background-color 0.3s ease, transform 0.2s ease;" onmouseover="this.style.backgroundColor='#45a049'; this.style.transform='scale(1.05)'" onmouseout="this.style.backgroundColor='#ab5c3c'; this.style.transform='scale(1)'">back</button>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div id="south_page" style="place-items: center; width: 100%; display: flex; flex-direction: column; align-items: center; display: none;">
+  <h1>Hope you find your choice</h1>
+  <div class="type">
+      <img src="https://static.toiimg.com/photo/68631114.cms" alt="burger">
+      <p class="dis">idli</p>
+      <div class="cho">
+          <button class="pl" onclick="inc17()">+</button>
+          <div id="val17">0</div>
+          <button class="min" onclick="dec17()">-</button>
+      </div><br>
+      <div id="pricepr" class="price">&#8377; 15</div>
+  </div>
+  <div class="type">
+      <img src="https://www.awesomecuisine.com/wp-content/uploads/2009/06/Plain-Dosa.jpg" alt="chow">
+      <p class="dis">dosa</p>
+      <div class="cho">
+          <button class="pl" onclick="inc18()">+</button>
+          <div id="val18">0</div>
+          <button class="min" onclick="dec18()">-</button>
+      </div>
+      <br><div id="pricebn" class="price">&#8377; 130</div>
+  </div>
+  <div class="type">
+      <img src="https://th.bing.com/th/id/OIP.wiZ5p16hdxP26fJ69TqdEQHaJ4?rs=1&pid=ImgDetMain" alt="Butter Naan">
+      <p class="dis">south india thali</p>
+      <div class="cho">
+          <button class="pl" onclick="inc19()">+</button>
+          <div id="val19">0</div>
+          <button class="min" onclick="dec19()">-</button>
+      </div>
+      <br><div id="priceap" class="price">&#8377; 300</div>
+  </div>
+  
+  <button onclick="pagchsopb()" style="background-color: #ab5c3c;border: none;color: white;padding: 15px 32px;text-align: center;text-decoration: none;display: inline-block;font-size: 16px;border-radius: 8px; /* Rounded corners */box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Subtle shadow */cursor: pointer;transition: background-color 0.3s ease, transform 0.2s ease;" onmouseover="this.style.backgroundColor='#45a049'; this.style.transform='scale(1.05)'" onmouseout="this.style.backgroundColor='#ab5c3c'; this.style.transform='scale(1)'">back</button>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div id="sala_page" style="place-items: center; width: 100%; display: flex; flex-direction: column; align-items: center; display: none;">
+    <h1>Hope you find your choice</h1>
+    <div class="type">
+        <img src="https://www.italianbellavita.com/wp-content/uploads/2022/08/739C7136-CBA2-4DDC-8D56-ECA409F69AB9-3.jpeg" alt="burger">
+        <p class="dis">plain salad</p>
+        <div class="cho">
+            <button class="pl" onclick="inc13()">+</button>
+            <div id="val13">0</div>
+            <button class="min" onclick="dec13()">-</button>
+        </div><br>
+        <div id="pricepr" class="price">&#8377; 40</div>
+    </div>
+    
+    <button onclick="pagchsb()" style="background-color: #ab5c3c;border: none;color: white;padding: 15px 32px;text-align: center;text-decoration: none;display: inline-block;font-size: 16px;border-radius: 8px; /* Rounded corners */box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Subtle shadow */cursor: pointer;transition: background-color 0.3s ease, transform 0.2s ease;" onmouseover="this.style.backgroundColor='#45a049'; this.style.transform='scale(1.05)'" onmouseout="this.style.backgroundColor='#ab5c3c'; this.style.transform='scale(1)'">back</button>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div id="cartpage" style="border-radius: 20px;text-align: center;">
+    <div class="type" id="pr" style="opacity: 90%;">
+        <img src="https://th.bing.com/th/id/OIP.n277reMbqv2dr1ak8N2PhgHaHa?rs=1&pid=ImgDetMain" alt="Plain Naan">
+        <p class="dis">Plain Roti <br> Carving fluffy texture</p>
+        <div class="cho">
+            <div id="valc">0</div>
+        </div>
+        <br><div id="pricepr" class="price">&#8377; 20</div>
+    </div>
+    <div class="type" id="bn" style="opacity: 90%;">
+        <img src="https://allwaysdelicious.com/wp-content/uploads/2022/04/garlic-butter-naan-4.jpg" alt="Butter Naan">
+        <p class="dis">Butter Naan <br> Drowned in butter</p>
+        <div class="cho">
+            <div id="val1c">0</div>
+        </div>
+        <br><div id="pricepr" class="price">&#8377; 25</div>
+    </div>
+    <div class="type" id="ap" style="opacity: 90%;">
+        <img src="https://www.archanaskitchen.com/images/archanaskitchen/Indian_Breads/Easy_Aloo_Paratha_Recipe_North_Indian_Punjabi_Style-1.jpg" alt="Butter Naan">
+        <p class="dis">aloo paratha <br>stuffed with fluffy and tasty potato</p>
+        <div class="cho">
+            <div id="val3c">0</div>
+        </div>
+        <br><div id="pricepr" class="price">&#8377; 35</div>
+    </div>
+    <div class="type" id="sp" style="opacity: 90%;">
+        <img src="https://recipes.timesofindia.com/photo/52446409.cms" alt="Plain Naan">
+        <p class="dis">Shahee paneer</p>
+        <div class="cho">
+            <div id="val4c">0</div>
+        </div>
+        <br><div id="pricepr" class="price">&#8377; 135</div>
+    </div>
+    <div class="type" id="dm" style="opacity: 90%;">
+        <img src="https://www.scrumptiously.com/wp-content/uploads/2023/05/DalMakhani.webp" alt="Butter Naan">
+        <p class="dis">Dal makhni</p>
+        <div class="cho">
+            <div id="val5c">0</div>
+        </div>
+        <br><div id="pricepr" class="price">&#8377; 100</div>
+    </div>
+    <div class="type" id="mv" style="opacity: 90%;">
+        <img src="https://hungryforever.net/wp-content/uploads/2015/07/veg-kadai-recipe.jpg" alt="Butter Naan">
+        <p class="dis">mix veg</p>
+        <div class="cho">
+            <div id="val6c">0</div>
+        </div>
+        <br><div id="pricepr" class="price">&#8377; 120</div>
+    </div>
+    <div class="type" id="rsm" style="opacity: 90%;">
+        <img src="https://1.bp.blogspot.com/-TNs4EdP12Dw/XwyTjoa52yI/AAAAAAAA2IU/8SLwB0fXa8Mmi1wmdib33QbmKOuuqygGwCLcBGAsYHQ/w1200-h630-p-k-no-nu/DSC09238.JPG" alt="Plain Naan">
+        <p class="dis">rasmalai</p>
+        <div class="cho">
+            <div id="val7c">0</div>
+        </div>
+        <br><div id="pricepr" class="price">&#8377; 50</div>
+    </div>
+    <div class="type" id="rsg" style="opacity: 90%;">
+        <img src="https://st4.depositphotos.com/17366968/40776/i/450/depositphotos_407763450-stock-photo-indian-sweet-rasgulla-also-know.jpg" alt="Butter Naan">
+        <p class="dis">rasgulla</p>
+        <div class="cho">
+            <div id="val8c">0</div>
+        </div>
+        <br><div id="pricepr" class="price">&#8377; 40</div>
+    </div>
+    <div class="type" id="kk" style="opacity: 90%;">
+        <img src="https://th.bing.com/th/id/R.bef3c40d5312fcddb0d01bbcb4165fea?rik=RzYgmhjC1CCSRA&riu=http%3a%2f%2fwww.blog.sagmart.com%2fwp-content%2fuploads%2f2015%2f11%2fKaju-Katli.jpg&ehk=U0M4t%2foDUNlQs4nPrJpWXcC5DIqS1LrtSdn2QNJIajI%3d&risl=&pid=ImgRaw&r=0" alt="Butter Naan">
+        <p class="dis">kaju katli</p>
+        <div class="cho">
+            <div id="val9c">0</div>
+        </div>
+        <br><div id="pricepr" class="price">&#8377; 400</div>
+    </div>
+    <div class="type" id="brg" style="opacity: 90%;">
+        <img src="https://www.omnimelbourne.com.au/wp-content/uploads/Burger1.jpg" alt="Burger">
+        <p class="dis">burger</p>
+        <div class="cho">
+            <div id="val10c">0</div>
+        </div>
+        <br><div id="pricepr" class="price">&#8377; 50</div>
+    </div>
+    <div class="type" id="cho" style="opacity: 90%;">
+        <img src="https://www.jessicagavin.com/wp-content/uploads/2018/01/chow-mein-1200.jpg" alt="chowmien">
+        <p class="dis">chowmien</p>
+        <div class="cho">
+            <div id="val11c">0</div>
+        </div>
+        <br><div id="pricepr" class="price">&#8377; 150</div>
+    </div>
+    <div class="type" id="ff" style="opacity: 90%;">
+        <img src="https://static.fanpage.it/wp-content/uploads/sites/22/2020/09/iStock-618214356.jpg" alt="french fries">
+        <p class="dis">french fries</p>
+        <div class="cho">
+            <div id="val12c">0</div>
+        </div>
+        <br><div id="pricepr" class="price">&#8377; 130</div>
+    </div>
+    <div class="type" id="sl" style="opacity: 90%;">
+        <img src="https://www.italianbellavita.com/wp-content/uploads/2022/08/739C7136-CBA2-4DDC-8D56-ECA409F69AB9-3.jpeg" alt="french fries">
+        <p class="dis">salad</p>
+        <div class="cho">
+            <div id="val13c">0</div>
+        </div>
+        <br><div id="pricepr" class="price">&#8377; 40</div>
+    </div>
+    <div class="type" id="smth" style="opacity: 90%;">
+        <img src="https://thumbs.dreamstime.com/z/small-non-veg-thali-272432901.jpg" alt="french fries">
+        <p class="dis">small thali</p>
+        <div class="cho">
+            <div id="val14c">0</div>
+        </div>
+        <br><div id="pricepr" class="price">&#8377; 140</div>
+    </div>
+    <div class="type" id="meth" style="opacity: 90%;">
+        <img src="https://tse4.mm.bing.net/th?id=OIP.Dq_LO74kYVhhoD16R9bg-gHaFj&rs=1&pid=ImgDetMain" alt="french fries">
+        <p class="dis">medium thali</p>
+        <div class="cho">
+            <div id="val15c">0</div>
+        </div>
+        <br><div id="pricepr" class="price">&#8377; 240</div>
+    </div>
+    <div class="type" id="lath" style="opacity: 90%;">
+        <img src="https://img.freepik.com/premium-photo/indian-hindu-veg-thali-also-known-as-food-platter-is-complete-lunch-dinner-meal-closeup-selective-focus_466689-9137.jpg?w=2000" alt="french fries">
+        <p class="dis">large thali</p>
+        <div class="cho">
+            <div id="val16c">0</div>
+        </div>
+        <br><div id="pricepr" class="price">&#8377; 340</div>
+    </div>
+    <div class="type" id="idli" style="opacity: 90%;">
+        <img src="https://static.toiimg.com/photo/68631114.cms" alt="french fries">
+        <p class="dis">idli</p>
+        <div class="cho">
+            <div id="val17c">0</div>
+        </div>
+        <br><div id="pricepr" class="price">&#8377; 15</div>
+    </div>
+    <div class="type" id="dosa" style="opacity: 90%;">
+        <img src="https://www.awesomecuisine.com/wp-content/uploads/2009/06/Plain-Dosa.jpg" alt="french fries">
+        <p class="dis">dosa</p>
+        <div class="cho">
+            <div id="val18c">0</div>
+        </div>
+        <br><div id="pricepr" class="price">&#8377; 130</div>
+    </div>
+    <div class="type" id="soth" style="opacity: 90%;">
+        <img src="https://th.bing.com/th/id/OIP.wiZ5p16hdxP26fJ69TqdEQHaJ4?rs=1&pid=ImgDetMain" alt="french fries">
+        <p class="dis">south indian thali</p>
+        <div class="cho">
+            <div id="val19c">0</div>
+        </div>
+        <br><div id="pricepr" class="price">&#8377; 300</div>
+    </div>
+    <div id="statment" style="display: flex;justify-content: center;"><p id="total"></p></div>
+    <button id="orde" onclick="sendDiv()">order</button><br><br>
+
+    <button id="butno" onclick="pagchbc()" style="margin: 20px;background-color: #ab5c3c;border: none;color: white;padding: 15px 32px;text-align: center;text-decoration: none;display: inline-block;font-size: 16px;border-radius: 8px; /* Rounded corners */box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Subtle shadow */cursor: pointer;transition: background-color 0.3s ease, transform 0.2s ease;" onmouseover="this.style.backgroundColor='#45a049'; this.style.transform='scale(1.05)'" onmouseout="this.style.backgroundColor='#ab5c3c'; this.style.transform='scale(1)'">back</button>
+</div>
+<p> <a id="shareLink" style="display:none;" target="_blank"></a></p>
+<p id="status"></p>
+
+
+
+
+
+
+
+
+
+<script>
+    function on(){document.getElementById("mainpage").style.display="none";document.getElementById("mainp").style.display="";}
+    function off(){document.getElementById("mainpage").style.display="";document.getElementById("mainp").style.display="none";}
+    function pagch(){document.getElementById("naan_page").style.display="";document.getElementById("mainp").style.display="none";}
+    function pagchb(){document.getElementById("naan_page").style.display="none";document.getElementById("mainp").style.display="";}
+    function pagchf(){document.getElementById("fast_page").style.display="";document.getElementById("mainp").style.display="none";}
+    function pagchfb(){document.getElementById("fast_page").style.display="none";document.getElementById("mainp").style.display="";}
+    function pagchsab(){document.getElementById("sabjipage").style.display="";document.getElementById("mainp").style.display="none";}
+    function pagchsabb(){document.getElementById("sabjipage").style.display="none";document.getElementById("mainp").style.display="";}
+    function pagchm(){document.getElementById("mithai").style.display="";document.getElementById("mainp").style.display="none";}
+    function pagchmb(){document.getElementById("mithai").style.display="none";document.getElementById("mainp").style.display="";}
+    function pagchs(){document.getElementById("sala_page").style.display="";document.getElementById("mainp").style.display="none";}
+    function pagchsb(){document.getElementById("sala_page").style.display="none";document.getElementById("mainp").style.display="";}
+    function pagchbc(){document.getElementById("cartpage").style.display="none";document.getElementById("mainp").style.display="";}
+    function pagcht(){document.getElementById("thali_page").style.display="";document.getElementById("mainp").style.display="none";}
+    function pagchtb(){document.getElementById("thali_page").style.display="none";document.getElementById("mainp").style.display="";}
+    function pagchi(){document.getElementById("info").style.display="";document.getElementById("mainp").style.display="none";}
+    function pagchib(){document.getElementById("info").style.display="none";document.getElementById("mainp").style.display="";}
+    function pagchr(){document.getElementById("restaurant").style.display="";document.getElementById("mainp").style.display="none";}
+    function pagchrb(){document.getElementById("restaurant").style.display="none";document.getElementById("mainp").style.display="";}
+    function pagchsop(){document.getElementById("south_page").style.display="";document.getElementById("mainp").style.display="none";}
+    function pagchsopb(){document.getElementById("south_page").style.display="none";document.getElementById("mainp").style.display="";}
+
+
+    function inc() {document.getElementById("val").innerHTML++;document.getElementById("valc").innerHTML++;}
+    function dec() {if (document.getElementById("val").innerHTML > 0) {document.getElementById("val").innerHTML--;document.getElementById("valc").innerHTML--;}}
+    function inc1() {document.getElementById("val1").innerHTML++;document.getElementById("val1c").innerHTML++;}
+    function dec1() {if (document.getElementById("val1").innerHTML > 0) {document.getElementById("val1").innerHTML--;document.getElementById("val1c").innerHTML--;}}
+    function inc2() {document.getElementById("val2").innerHTML++;document.getElementById("val2c").innerHTML++;}
+    function dec2() {if (document.getElementById("val2").innerHTML > 0) {document.getElementById("val2").innerHTML--;document.getElementById("val2c").innerHTML--;}}
+    function inc3() {document.getElementById("val3").innerHTML++;document.getElementById("val3c").innerHTML++;}
+    function dec3() {if (document.getElementById("val3").innerHTML > 0) {document.getElementById("val3").innerHTML--;document.getElementById("val3c").innerHTML--;}}
+
+
+    function inc4() {
+  document.getElementById("val4").innerHTML++;
+  document.getElementById("val4c").innerHTML++;
+}
+
+function dec4() {
+  if (document.getElementById("val4").innerHTML > 0) {
+    document.getElementById("val4").innerHTML--;
+    document.getElementById("val4c").innerHTML--;
+  }
+}
+
+function inc5() {
+  document.getElementById("val5").innerHTML++;
+  document.getElementById("val5c").innerHTML++;
+}
+
+function dec5() {
+  if (document.getElementById("val5").innerHTML > 0) {
+    document.getElementById("val5").innerHTML--;
+    document.getElementById("val5c").innerHTML--;
+  }
+}
+
+function inc6() {
+  document.getElementById("val6").innerHTML++;
+  document.getElementById("val6c").innerHTML++;
+}
+
+function dec6() {
+  if (document.getElementById("val6").innerHTML > 0) {
+    document.getElementById("val6").innerHTML--;
+    document.getElementById("val6c").innerHTML--;
+  }
+}
+function inc7() {
+  document.getElementById("val7").innerHTML++;
+  document.getElementById("val7c").innerHTML++;
+}
+
+function dec7() {
+  if (document.getElementById("val7").innerHTML > 0) {
+    document.getElementById("val7").innerHTML--;
+    document.getElementById("val7c").innerHTML--;
+  }
+}
+
+function inc8() {
+  document.getElementById("val8").innerHTML++;
+  document.getElementById("val8c").innerHTML++;
+}
+
+function dec8() {
+  if (document.getElementById("val8").innerHTML > 0) {
+    document.getElementById("val8").innerHTML--;
+    document.getElementById("val8c").innerHTML--;
+  }
+}
+
+function inc9() {
+  document.getElementById("val9").innerHTML++;
+  document.getElementById("val9c").innerHTML++;
+}
+
+function dec9() {
+  if (document.getElementById("val9").innerHTML > 0) {
+    document.getElementById("val9").innerHTML--;
+    document.getElementById("val9c").innerHTML--;
+  }
+}
+
+function inc10() {
+  document.getElementById("val10").innerHTML++;
+  document.getElementById("val10c").innerHTML++;
+}
+
+function dec10() {
+  if (document.getElementById("val10").innerHTML > 0) {
+    document.getElementById("val10").innerHTML--;
+    document.getElementById("val10c").innerHTML--;
+  }
+}
+
+function inc11() {
+  document.getElementById("val11").innerHTML++;
+  document.getElementById("val11c").innerHTML++;
+}
+
+function dec11() {
+  if (document.getElementById("val11").innerHTML > 0) {
+    document.getElementById("val11").innerHTML--;
+    document.getElementById("val11c").innerHTML--;
+  }
+}
+
+function inc12() {
+  document.getElementById("val12").innerHTML++;
+  document.getElementById("val12c").innerHTML++;
+}
+
+function dec12() {
+  if (document.getElementById("val12").innerHTML > 0) {
+    document.getElementById("val12").innerHTML--;
+    document.getElementById("val12c").innerHTML--;
+  }
+}
+function inc13() {
+  document.getElementById("val13").innerHTML++;
+  document.getElementById("val13c").innerHTML++;
+}
+
+function dec13() {
+  if (document.getElementById("val13").innerHTML > 0) {
+    document.getElementById("val13").innerHTML--;
+    document.getElementById("val13c").innerHTML--;
+  }
+}
+function inc14() {
+  document.getElementById("val14").innerHTML++;
+  document.getElementById("val14c").innerHTML++;
+}
+
+function dec14() {
+  if (document.getElementById("val14").innerHTML > 0) {
+    document.getElementById("val14").innerHTML--;
+    document.getElementById("val14c").innerHTML--;
+  }
+}
+function inc15() {
+  document.getElementById("val15").innerHTML++;
+  document.getElementById("val15c").innerHTML++;
+}
+
+function dec15() {
+  if (document.getElementById("val15").innerHTML > 0) {
+    document.getElementById("val15").innerHTML--;
+    document.getElementById("val15c").innerHTML--;
+  }
+}
+function inc16() {
+  document.getElementById("val16").innerHTML++;
+  document.getElementById("val16c").innerHTML++;
+}
+
+function dec16() {
+  if (document.getElementById("val16").innerHTML > 0) {
+    document.getElementById("val16").innerHTML--;
+    document.getElementById("val16c").innerHTML--;
+  }
+}
+function inc17() {
+  document.getElementById("val17").innerHTML++;
+  document.getElementById("val17c").innerHTML++;
+}
+
+function dec17() {
+  if (document.getElementById("val17").innerHTML > 0) {
+    document.getElementById("val17").innerHTML--;
+    document.getElementById("val17c").innerHTML--;
+  }
+}
+function inc18() {
+  document.getElementById("val18").innerHTML++;
+  document.getElementById("val18c").innerHTML++;
+}
+
+function dec18() {
+  if (document.getElementById("val18").innerHTML > 0) {
+    document.getElementById("val18").innerHTML--;
+    document.getElementById("val18c").innerHTML--;
+  }
+}
+function inc19() {
+  document.getElementById("val19").innerHTML++;
+  document.getElementById("val19c").innerHTML++;
+}
+
+function dec19() {
+  if (document.getElementById("val19").innerHTML > 0) {
+    document.getElementById("val19").innerHTML--;
+    document.getElementById("val19c").innerHTML--;
+  }
+}
+
+function scart(){
+    document.getElementById("total").innerHTML = " ";
+    document.getElementById("mainp").style.display="none";
+    document.getElementById("cartpage").style.display="block";
+    if(document.getElementById("val").innerHTML==0){
+        document.getElementById("pr").style.display="none"
+    }
+    else{
+        document.getElementById("pr").style.display=""
+    }
+    if(document.getElementById("val1").innerHTML==0){
+        document.getElementById("bn").style.display="none"
+    }
+    else{
+        document.getElementById("bn").style.display=""
+    }
+    if(document.getElementById("val3").innerHTML==0){
+        document.getElementById("ap").style.display="none"
+    }
+    else{
+        document.getElementById("ap").style.display=""
+    }
+    if(document.getElementById("val4").innerHTML==0){
+        document.getElementById("sp").style.display="none"
+    }
+    else{
+        document.getElementById("sp").style.display=""
+    }
+    if(document.getElementById("val5").innerHTML==0){
+        document.getElementById("dm").style.display="none"
+    }
+    else{
+            document.getElementById("dm").style.display=""
+        }
+        if(document.getElementById("val6").innerHTML==0){
+            document.getElementById("mv").style.display="none"
+        }
+        else{
+            document.getElementById("mv").style.display=""
+        }
+        if(document.getElementById("val7").innerHTML==0){
+            document.getElementById("rsm").style.display="none"
+        }
+        else{
+            document.getElementById("rsm").style.display=""
+        }
+        if(document.getElementById("val8").innerHTML==0){
+            document.getElementById("rsg").style.display="none"
+        }
+        else{
+            document.getElementById("rsg").style.display=""
+        }
+        if(document.getElementById("val9").innerHTML==0){
+            document.getElementById("kk").style.display="none"
+        }
+        else{
+            document.getElementById("kk").style.display=""
+        }
+        if(document.getElementById("val10").innerHTML==0){
+            document.getElementById("brg").style.display="none"
+        }
+        else{
+            document.getElementById("brg").style.display=""
+        }
+        if(document.getElementById("val11").innerHTML==0){
+            document.getElementById("cho").style.display="none"
+        }
+        else{
+            document.getElementById("cho").style.display=""
+        }
+        if(document.getElementById("val12").innerHTML==0){
+            document.getElementById("ff").style.display="none"
+        }
+        else{
+            document.getElementById("ff").style.display=""
+        }
+        if(document.getElementById("val13").innerHTML==0){
+            document.getElementById("sl").style.display="none"
+        }
+        else{
+            document.getElementById("sl").style.display=""
+        }
+        if(document.getElementById("val14").innerHTML==0){
+            document.getElementById("smth").style.display="none"
+        }
+        else{
+            document.getElementById("smth").style.display=""
+        }
+        if(document.getElementById("val15").innerHTML==0){
+            document.getElementById("meth").style.display="none"
+        }
+        else{
+            document.getElementById("meth").style.display=""
+        }
+        if(document.getElementById("val16").innerHTML==0){
+            document.getElementById("lath").style.display="none"
+        }
+        else{
+            document.getElementById("lath").style.display=""
+        }
+        if(document.getElementById("val17").innerHTML==0){
+            document.getElementById("idli").style.display="none"
+        }
+        else{
+            document.getElementById("idli").style.display=""
+        }
+        if(document.getElementById("val18").innerHTML==0){
+            document.getElementById("dosa").style.display="none"
+        }
+        else{
+            document.getElementById("dosa").style.display=""
+        }
+        if(document.getElementById("val19").innerHTML==0){
+            document.getElementById("soth").style.display="none"
+        }
+        else{
+            document.getElementById("soth").style.display=""
+        }
+        document.getElementById("total").innerHTML = 20 * document.getElementById("val").innerHTML + 25 * document.getElementById("val1").innerHTML + 35 * document.getElementById("val3").innerHTML + 135 * document.getElementById("val4").innerHTML + 100 * document.getElementById("val5").innerHTML + 120 * document.getElementById("val6").innerHTML + 50 * document.getElementById("val7").innerHTML + 40 * document.getElementById("val8").innerHTML + 400 * document.getElementById("val9").innerHTML + 50 * document.getElementById("val10").innerHTML + 150 * document.getElementById("val11").innerHTML + 130 * document.getElementById("val12").innerHTML + 40 * document.getElementById("val13").innerHTML + 140 * document.getElementById("val14").innerHTML + 240 * document.getElementById("val15").innerHTML + 340 * document.getElementById("val16").innerHTML + 15 * document.getElementById("val17").innerHTML + 130 * document.getElementById("val18").innerHTML + 300 * document.getElementById("val19").innerHTML
+    }
+
+
+
+
+
+    const firebaseConfig = {
+    apiKey: "AIzaSyC-gxWyCUeytGQ75grVYpmS_Ina9BOOPo8",
+    authDomain: "foodmania-db285.firebaseapp.com",
+    databaseURL: "https://foodmania-db285-default-rtdb.firebaseio.com", // ✅ Required!
+    projectId: "foodmania-db285",
+    storageBucket: "foodmania-db285.appspot.com",
+    messagingSenderId: "137643950080",
+    appId: "1:137643950080:web:a732a3ff239e56b98b58e5",
+    measurementId: "G-6D561CPDFS"
+  };
+
+  firebase.initializeApp(firebaseConfig);
+  const db = firebase.database();
+
+  function sendDiv() {
+    const cartHTML = document.getElementById("cartpage").outerHTML;
+    const id = Date.now();
+    db.ref('carts/' + id).set({ html: cartHTML }).then(() => {
+      const link = `receiver.html?id=${id}`;
+      document.getElementById("shareLink").href = link;
+      document.getElementById("shareLink").textContent = link;
+      document.getElementById("status").textContent = "✅ Order sent successfully!";
+    });
+  }
+
+
+</script>
+</body>
+</html>

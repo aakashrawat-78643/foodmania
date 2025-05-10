@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Receiver Page</title>
+</head>
+<style>
+    
+    #orde:hover{
+      transition: 2s;
+      background: linear-gradient(120deg,blue,purple,black);
+      border: 2px solid red;
+      color: white;
+      border-radius: 20px;
+    }
+
+    h1 {
+            color: #333;
+            margin-bottom: 30px;
+            text-align: center;
+        }
+
+        .type {
+            background-color: #f8f8f8;
+            border-radius: 15px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            display: grid;
+            grid-template-columns: 1fr 2fr 1fr; 
+            align-items: center;
+            padding: 20px;
+            margin-bottom: 20px;
+            width: 90%;
+            max-width: 600px;
+        }
+        .type:hover{
+            background-color: #f7ebeb;
+        }
+
+        .type img {
+            width: 100%;
+            max-width: 150px;
+            height: auto;
+            border-radius: 10px;
+            object-fit: cover; /* Maintain aspect ratio */
+        }
+
+        .type p.dis {
+            text-align: center;
+            font-size: 1.1em;
+            color: #555;
+            line-height: 1.5;
+        }
+
+        .cho {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .cho button {
+            background-color: #e0f2fe;
+            border: none;
+            border-radius: 8px;
+            padding: 8px 15px;
+            font-size: 1em;
+            cursor: pointer;
+            margin: 0 5px;
+            transition: background-color 0.3s ease;
+        }
+
+        .cho button:hover {
+            background-color: #b3e5fc;
+        }
+
+        .cho #val, .cho #val1, .cho #val3 {
+            font-size: 1.2em;
+            padding: 8px 12px;
+            border-radius: 5px;
+            background-color: #f0f0f0;
+            margin: 0 5px;
+            min-width: 30px;
+            text-align: center;
+        }
+
+        /* Responsive adjustments */
+        @media (max-width: 600px) {
+            .type {
+                grid-template-columns: 1fr;
+                text-align: center;
+            }
+            .type img {
+                max-width: 200px;
+                margin: 0 auto 10px;
+            }
+        }
+
+        .cho button:hover {
+            background-color: #b3e5fc;
+        }
+
+        .cho #val, .cho #val1 {font-size: 1.2em;padding: 8px 12px;border-radius: 5px;background-color: #f0f0f0;margin: 0 5px;min-width: 30px;text-align: center;
+        }
+
+        /* Responsive adjustments */
+        @media (max-width: 600px) {
+            .type {
+                grid-template-columns: 1fr;
+                text-align: center;
+            }
+            .type img {
+                max-width: 200px;
+                margin: 0 auto 10px;
+            }
+        }
+        #ca{
+            transition: 500ms;
+            background-color: #ab5c3c;
+            padding: 5px;
+            color: yellow;
+            font-weight: bolder;
+            font-style: italic;
+            border-radius: 10px;
+        }
+        #ca:hover{
+            transition: 500ms;
+            background-color: black;
+            color: white;
+        }
+        #cartpage{
+            display: none;
+            background: whitesmoke;
+            padding: 50px;
+            padding-bottom: 0%;
+        }
+        .price{
+            text-align: center;
+            font-weight: bolder;
+            font-size: large;
+            background: linear-gradient(50deg,red,blue,navy);
+            color: transparent;
+            background-clip: text;
+        }
+        #statment{
+            color: #333;
+            font-weight: bolder;
+            text-align: center;
+        }
+</style>
+<body>
+  <h2>Receiver Page</h2>
+  <div id="output" style="border-radius: 20px;text-align: center;"></div>
+  <script>
+    const firebaseConfig = {
+      apiKey: "AIzaSyC-gxWyCUeytGQ75grVYpmS_Ina9BOOPo8",
+      authDomain: "foodmania-db285.firebaseapp.com",
+      databaseURL: "https://foodmania-db285-default-rtdb.firebaseio.com",
+      projectId: "foodmania-db285",
+      storageBucket: "foodmania-db285.appspot.com",
+      messagingSenderId: "137643950080",
+      appId: "1:137643950080:web:a732a3ff239e56b98b58e5",
+      measurementId: "G-6D561CPDFS"
+    };
+    firebase.initializeApp(firebaseConfig);
+    const db = firebase.database();
+
+    const params = new URLSearchParams(window.location.search);
+    const id = params.get("id");
+
+    if (id) {
+      db.ref('carts/' + id).once('value').then(snapshot => {
+        const data = snapshot.val();
+        document.getElementById("output").innerHTML = data ? data.html : "❌ Cart not found.";
+      });
+    } else {
+      document.getElementById("output").textContent = "❗ No cart ID provided.";
+    }
+  </script>
+</body>
+</html>
